@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const authRoute = require("./routes/authRoute")
+const courseRoute = require("./routes/courseRoute")
 const passport = require("passport")
 const { users } = require('./model/index')
 const generateToken = require('./services/generateToken')
@@ -79,6 +80,7 @@ res.redirect("http://localhost:5173/google?token=" + token)
 )
 
 app.use("",authRoute)
+app.use("",courseRoute)
 
 const port = 3000
 app.listen(port,()=>{

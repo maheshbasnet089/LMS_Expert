@@ -1,3 +1,4 @@
+const seedAdmin = require("../adminSeeder.js");
 const dbConfig = require("../config/dbConfig");
 const { Sequelize, DataTypes } = require("sequelize");
 
@@ -26,15 +27,27 @@ db.sequelize = sequelize;
 // importing model files 
 
 db.users = require("./userModel.js")(sequelize, DataTypes);
+db.courses = require("./courseModel.js")(sequelize, DataTypes);
+db.chapters = require("./courseChaptersModel.js")(sequelize, DataTypes);
+db.categories = require("./courseCategoryModel.js")(sequelize, DataTypes);
 sequelize
   .authenticate()
   .then(async () => {
     console.log("CONNECTED!!");
+    seedAdmin(db.users)
    // check if admin exists or not
   })
   .catch((err) => {
     console.log("Error" + err);
   });
+
+
+// relationships 
+db.courses.hasMany(db.chapters)
+db.chapters.belongsTo(db.courses)
+
+db.chapters.hasMany(db.categories)
+db.categories.belongsTo(db.chapters)
 
 
 db.sequelize.sync({ force: 0 }).then(() => {
